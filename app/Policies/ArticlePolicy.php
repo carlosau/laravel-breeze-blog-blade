@@ -47,6 +47,11 @@ class ArticlePolicy
     public function delete(User $user, Article $article): bool
     {
         //
+        return $this->update($user, $article);
+        /** 
+         * Rather than repeating the logic from the update method, we can define the same logic by calling the update method from our destroy method. 
+         * Anyone that is authorized to update a Chirp will now be authorized to delete it as well.
+        */
     }
 
     /**
