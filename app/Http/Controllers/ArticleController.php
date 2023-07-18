@@ -55,17 +55,31 @@ class ArticleController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Article $article)
+    public function edit(Article $article): View
     {
         //
+        $this->authorize('update', $article);
+
+        return view('articles.edit', [
+            'article' => $article,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Article $article)
+    public function update(Request $request, Article $article): RedirectResponse
     {
         //
+        $this->authorize('update', $article);
+
+        $validated = $request->validate([
+            'message' => 'required|string|max:255'
+        ]);
+
+        $article->update($validated);
+
+        return redirect(route('articles.index'));
     }
 
     /**
